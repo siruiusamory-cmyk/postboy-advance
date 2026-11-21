@@ -2,7 +2,7 @@
 
 Postboy Advance is the Windows application for making a game on the Buu's Fury engine.
 This first version does one whole loop: **Open, Edit, Save, Build, Play, Revise**. The
-thing you can edit today is the game's text. No terminal, no Python, no hex.
+tabs edit the game's text, maps, characters, conversations, story events and enemies. No terminal, no Python, no hex.
 
 ## What you need
 
@@ -295,8 +295,8 @@ the project does not change the game yet, it says there is nothing to export.
 
 ## If something goes wrong
 
-- **The application closed while you had unsaved changes.** Open the project again.
-  It offers to restore them.
+- **The application closed while you had unsaved text changes.** Open the project
+  again. It offers to restore them.
 - **"This project's Buu's Fury ROM was not found."** The ROM moved. Locate it when
   asked; the project remembers the new place.
 - **A build fails.** Nothing is lost and the last good ROM is kept. Read the
@@ -308,6 +308,43 @@ issue with the details filled in, and with your Windows user folder shown as `~`
 **Copy details** puts the same text on the clipboard. To report something without an
 error window, use **Help > Report a Problem**. **Help > Open Log Folder** opens the
 folder that holds `postboy-advance.log`.
+
+## Common questions
+
+### Why does Windows warn me when the program starts?
+
+The program is not code-signed, so Windows may show "Windows protected your PC" the
+first time. Choose **More info**, then **Run anyway**.
+
+### Which ROM does it accept, and how do I know mine is right?
+
+It accepts your own copy of **Dragon Ball Z: Buu's Fury (USA)**, in the exact version listed in
+[ROM profiles](rom-profiles.md). When you choose the ROM for a new project, the dialog
+says whether it is the right one. A file with the right title but different contents
+is refused.
+
+### How do I share what I made?
+
+Choose **File > Export Patch...** and share the `.bps` file it writes. The patch holds
+only your changes, and other people apply it to their own copy of the game. Never
+share the built `.gba` file, because it contains the whole game.
+
+### Where are my projects and the log?
+
+A project is the folder you chose when you made it. The log is
+`logs/postboy-advance.log` in the `Postboy Advance` folder of your Windows user's
+local application data, and **Help > Open Log Folder** opens it.
+
+### What do I do when a build fails?
+
+Read the Problems panel, and click a problem that names a text record to go to it. Nothing
+is lost, and the last good ROM is kept.
+
+### Can I use The Legacy of Goku or The Legacy of Goku II?
+
+Not in Postboy Advance. The developer tools can make a few command-line edits to The
+Legacy of Goku II and can read the scripts of The Legacy of Goku; the
+[SDK overview](sdk-overview.md) describes them.
 
 ## Limits of this version
 

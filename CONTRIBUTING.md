@@ -74,8 +74,8 @@ reach for the binary for the exact mechanism.
 6. If your change alters a capability, blocker, milestone or public roadmap,
    update [`src/data/capabilities.json`](src/data/capabilities.json) and
    [`src/data/project.ts`](src/data/project.ts) in the same change, then run
-   `npm run check`, `npm run build` and the site consistency tests. The retained status data and its checks must remain consistent; website
-   publishing is separate from SDK installation and use.
+   `npm run check`, `npm run build` and the site consistency tests. Keep the status data and its checks consistent; publishing
+   the website is separate from installing or using the SDK.
 7. Open a pull request describing the behavior change, the evidence behind it
    and how it was validated.
 

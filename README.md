@@ -108,7 +108,8 @@ experience, strength and endurance. Place them on maps and choose when they appe
 ### Safety nets
 
 - Every change can be undone with **Ctrl+Z**.
-- Unsaved work survives a crash and is offered back the next time you open the project.
+- Unsaved text changes survive a crash and are offered back the next time you open
+  the project.
 - A build that fails keeps your last working build.
 - Your original ROM is never changed.
 
@@ -161,6 +162,8 @@ The full rules are in the [ROM safety contract](docs/ROM_SAFETY.md).
 
 - Something went wrong: see
   [If something goes wrong](docs/creator.md#if-something-goes-wrong) in the user guide.
+- Questions about your ROM or sharing what you made: see
+  [Common questions](docs/creator.md#common-questions) in the user guide.
 - Found a bug or want a feature: open an
   [issue](https://github.com/siruiusamory-cmyk/postboy-advance/issues). Say what you
   did, what you expected and what happened. Never attach a ROM, save file or

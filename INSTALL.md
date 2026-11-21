@@ -96,11 +96,11 @@ entry point and prints nothing.
 - If `uv` is missing, install it using its linked instructions and reopen PowerShell.
 - If an executable is missing, confirm setup completed successfully and that you
   are in the clone root. Do not install globally to work around an incomplete setup.
-- An unrecognized ROM is not permission to change its identity in the catalogue.
+- If your ROM is unrecognized, do not change its identity in the catalogue.
 - ROM editing and emulator behavior require private inputs. CLI help and
   synthetic tests can be checked without a ROM; neither proves a real game edit.
 
-The [newcomer walkthrough](docs/newcomer.md) preserves command-level evidence
-and clearly distinguishes executed checks from unexecuted game workflows.
+The [newcomer walkthrough](docs/newcomer.md) shows each command with its exit
+code and marks the steps that were not run.
 For development see [Contributing](CONTRIBUTING.md) and the
 [documentation index](docs/README.md).

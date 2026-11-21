@@ -271,9 +271,8 @@ export const project: ProjectStatus = {
   tagline: "A modding SDK and desktop editor for the Webfoot Dragon Ball Z GBA games.",
   description:
     "A modding toolkit and desktop editor for the three Webfoot Dragon Ball Z GBA" +
-    " games. The engine-archaeology programme that built it is finished, and product" +
-    " development continues one editor capability at a time against the verified" +
-    " resource corpus.",
+    " games. The reverse-engineering work behind it is finished, and all 24 editor" +
+    " capabilities have shipped.",
   progressCaveat:
     "The percentage above is counted from the capability list below, so it moves when a" +
     " capability does. It is a count of editor capabilities, not an estimate, and not a" +
@@ -286,8 +285,8 @@ export const project: ProjectStatus = {
     " composes the map table, a map root, its layers, chunks and connections into a" +
     " new playable area, and a driven session watched the retail engine transition" +
     " into it and back out. Nothing is missing any more. The remaining work is the" +
-    " release-candidate phase - creator experience, recovery, packaging and the" +
-    " end-to-end dogfood gate - and it has not started.",
+    " release-candidate phase: creator experience, recovery, packaging and the" +
+    " end-to-end trial project.",
   blockerParagraphs: [
     "Map editing is complete, and the capability list says so. Phase 2 covered the four" +
     " map capabilities in order: tile painting, chunk creation, map resizing with layer" +
@@ -297,7 +296,7 @@ export const project: ProjectStatus = {
     " every supported transition is drawn on the map as the region that triggers it," +
     " where a click selects it and a drag moves it as one undoable gesture. A" +
     " human-operated run confirmed that the retail engine consumes an authored" +
-    " transition, so the map surfaces are proven rather than planned.",
+    " transition.",
     "Graphics import is the first capability of the graphics phase and it has shipped." +
     " An extracted sprite asset's PNG is the authored source: edit it, validate, build," +
     " and the retail engine renders the authored pixels. A re-encoded payload that" +
@@ -319,14 +318,14 @@ export const project: ProjectStatus = {
     " unresolved, so the two images are not byte-identical and the capability is" +
     " registered at application proof. Piece and OAM composition, frame geometry and" +
     " frame timing are outside the modelled contract, and the surface states that where" +
-    " it is offered rather than pretending otherwise.",
+    " it is offered.",
     "Appearance authoring has shipped as well, and it was the capability research had to" +
     " settle first. The table's record count is three compiled loop bounds with no" +
     " terminator, so growth is by re-emission: the build moves the whole table above the" +
     " image's end and rewrites the five literal words and three count bounds that reach" +
     " it. The roster structure the engine builds from the seen flags is relocated with" +
     " it, all twenty-nine compiled statements of its layout restated for the supported" +
-    " maximum of 240 records against the 232 the image has. A driven session then watched the retail search return an authored record" +
+    " maximum of 240 records against the 232 the image has. In a manual play test the retail search returned an authored record" +
     " at a post-canonical index for a retail actor, and the Scouter's own character" +
     " screen displayed the authored data for that actor - an object whose retail record" +
     " reads \"Fighter\" and \"This is a martial artist from the Other World\" showed the" +
@@ -334,16 +333,13 @@ export const project: ProjectStatus = {
     " identity the retail table already uses is an explicit, default-off choice per" +
     " definition, because that redirection is real and the build refuses a takeover" +
     " nobody asked for.",
-    "The capability list is complete: all 24 capabilities in the fixed registry are" +
-    " shipped and reachable from Postboy Advance. The remaining work is the" +
-    " release-candidate phase - creator experience, recovery, packaging and the" +
-    " end-to-end dogfood gate - and it has not started.",
+    "All 24 capabilities in the fixed registry are shipped.",
   ],
   acceptanceTarget:
     "Author playable Legacy of Goku content inside the real LOGII/Buu engine.",
   definitionOfDone: [
-    "Webfoot SDK is the product, not a collection of reverse-engineering notes. Understanding the game only matters when it unlocks something an author can actually create.",
-    "The acceptance test is straightforward: create newly authored Legacy of Goku content with the SDK, build the game, and successfully play it in the original engine.",
+    "Webfoot SDK is the product. Reverse-engineering notes matter only when they let an author create something.",
+    "The acceptance test: create newly authored Legacy of Goku content with the SDK, build the game, and play it in the original engine.",
   ],
   milestones: [
     {
@@ -995,7 +991,7 @@ export const project: ProjectStatus = {
       id: "scene-authored-through-workbench",
       title: "First complete playable scene authored entirely in the desktop tool",
       summary:
-        "The project owner built a full playable NPC scene from start to finish inside Webfoot Workbench — choosing a map, placing an enemy, giving it behavior, a script, a defeat trigger, and an author-written message, then validating, building, and launching — with no Python, TOML, command line, or hex. Defeating the NPC in the original Buu's Fury engine showed the authored banner on screen.",
+        "The maintainer built a full playable NPC scene from start to finish inside Webfoot Workbench: choosing a map, placing an enemy, giving it behavior, a script, a defeat trigger, and an author-written message, then validating, building, and launching, with no Python, TOML, command line, or hex. Defeating the NPC in the original Buu's Fury engine showed the authored banner on screen.",
       technical:
         "Runtime-proven. The scene was authored on map:0040: clone a type_0086 enemy-linked placement, configure the entity, assign an on_defeat behavior plus an authored show_centered_sprite_text script, then Validate, Build, Launch, defeat the NPC, and observe the authored banner in the retail engine — every step through the GUI. No new reverse engineering was required; the capabilities were surfaced through the existing SDK. The proven scene is deliberately one authored record plus one line of text, which makes breadth the next frontier.",
     },
@@ -1097,9 +1093,9 @@ export const project: ProjectStatus = {
     },
     {
       id: "authored-rom-materialization",
-      title: "First canonical AUTHOR_NEW ROM build",
+      title: "First ROM build with new authored map data",
       summary:
-        "The SDK produced a deterministic Buu's Fury build containing genuinely new authored map data using verified writable space.",
+        "The SDK produced a deterministic Buu's Fury build containing new authored map data in verified writable space.",
       technical:
         "A 256-byte region of the unmodified game is verified writable and declared in the SDK profile. Materializing the authored entity requests 44 bytes of it, and exactly 48 bytes change across the whole game file. Repeated builds are byte-identical and the original game file is never modified.",
     },
@@ -1265,14 +1261,13 @@ export const project: ProjectStatus = {
     { label: "project.json", url: "/project.json" },
   ],
   footerTagline:
-    "A toolkit for authoring Legacy of Goku content against the actual LOGII/Buu engine.",
+    "A toolkit for authoring Legacy of Goku content in the original LoG II/Buu engine.",
   developmentStatus: "ACTIVE DEVELOPMENT",
   disclaimer:
     "Independent fan development project. Not affiliated with Webfoot Technologies or the relevant game/IP rights holders.",
   assetPolicy:
-    "The product captures on this page are unaltered screenshots of the real Postboy" +
-    " Advance application, cropped only. They are not mockups, renders or generated images," +
-    " and this site ships no generated imagery of any kind.",
+    "The captures on this page are unaltered screenshots of the real Postboy" +
+    " Advance application, cropped only; this site ships no generated imagery.",
 };
 
 const buildoutItems = project.buildout.families.flatMap((family) => family.items);
@@ -1338,14 +1333,11 @@ export interface RoadmapTo1 {
 const roadmapTo1: RoadmapTo1 = {
   title: "The remaining work, in the order it will happen",
   lede:
-    "Every step below is an editor capability a mod author will be able to use,"
+    "Every step in phases 0 to 4 is an editor capability a mod author can use,"
     + " not an internal milestone. The count is a count of authoring capabilities,"
-    + " so it only moves when the product genuinely gains one.",
+    + " so it only moves when the product gains one.",
   position:
-    "The foundation and the authoring-safety baseline are complete, and Phase 2 is"
-    + " complete: tile painting, chunk creation, map resizing with layer authoring, and"
-    + " warp and connection editing have all shipped. Phase 3, graphics and actor"
-    + " authoring, has started with graphics import.",
+    "Phases 0 to 4 are complete, and all 24 authoring capabilities have shipped.",
   phases: [
     {
       id: "foundation",
@@ -1382,7 +1374,7 @@ const roadmapTo1: RoadmapTo1 = {
         "Preserve unsaved and staged edits when something else changes",
         "Clear, actionable failure messages instead of a dead click",
         "Responsive editing on large projects",
-        "Continuous integration that actually exercises the desktop application",
+        "Continuous integration that runs the desktop application",
       ],
       state: "complete",
     },
@@ -1433,7 +1425,7 @@ const roadmapTo1: RoadmapTo1 = {
         " it rewritten in the same transaction. A human-operated run proved both halves," +
         " including that the retail engine follows a rewritten reference into expanded" +
         " storage and renders the authored pixels. Same dimensions only - no resizing, no" +
-        " new frames - and a confirmed-reference limit that is stated rather than assumed",
+        " new frames - and a stated limit on confirmed references",
         "New sprite, animation and frame authoring - SHIPPED: the Graphics tab's authored" +
         " sprite surface creates the project's one new actor-sprite identity. Choose the" +
         " donor whose proven composition shape every frame keeps, name the sheet each" +

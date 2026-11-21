@@ -5,10 +5,6 @@ the four adapter functions and the journal registration that make that edit
 undoable: the round trip through the SDK's own reader and writer, the identity
 refusal, and an apply/undo/redo through the ONE journal. It needs no window and
 no canonical image: the document layer is text.
-
-The build half, where the recolour becomes a `palette_entry:NNN` byte change in
-the emitted image, is proven in `test_postboy_graphics_acceptance.py`, which
-is where the image is.
 """
 
 from __future__ import annotations
