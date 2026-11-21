@@ -1333,7 +1333,7 @@ export interface RoadmapTo1 {
 const roadmapTo1: RoadmapTo1 = {
   title: "The remaining work, in the order it will happen",
   lede:
-    "Every step in phases 0 to 4 is an editor capability a mod author can use,"
+    "Every step in phases 2 to 4 is an editor capability a mod author can use,"
     + " not an internal milestone. The count is a count of authoring capabilities,"
     + " so it only moves when the product gains one.",
   position:

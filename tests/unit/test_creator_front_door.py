@@ -89,7 +89,7 @@ def test_details_carry_the_version_and_no_home_path():
     assert PRODUCT_VERSION in details
     assert "Python" in details and "Qt" in details
     assert "~" in details
-    assert Path.home().name.lower() not in details.lower(), details
+    assert str(Path.home()).lower() not in details.lower(), details
 
 
 def test_home_is_hidden_however_an_error_spells_it(monkeypatch):

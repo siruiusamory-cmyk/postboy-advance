@@ -127,7 +127,7 @@ anyone. To make a patch, choose **File > Export Patch...** in the program
 | --- | --- |
 | **Dragon Ball Z: Buu's Fury (USA)** | Everything described above. This is the game the program is built for. |
 | **Dragon Ball Z: The Legacy of Goku II** | Developer tools only: a few command-line edits. Not available in the program. |
-| **Dragon Ball Z: The Legacy of Goku** | Developer tools only: the game is recognised and its scripts can be read. Not available in the program. |
+| **Dragon Ball Z: The Legacy of Goku** | Developer tools only: the game is recognised, its scripts can be read and one dialogue scene's lines can be rewritten. Not available in the program. |
 
 Only the exact supported version of each game is accepted. A file with the right
 title but different contents is refused. [ROM profiles](docs/rom-profiles.md) lists

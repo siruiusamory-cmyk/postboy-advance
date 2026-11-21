@@ -343,7 +343,8 @@ is lost, and the last good ROM is kept.
 ### Can I use The Legacy of Goku or The Legacy of Goku II?
 
 Not in Postboy Advance. The developer tools can make a few command-line edits to The
-Legacy of Goku II and can read the scripts of The Legacy of Goku; the
+Legacy of Goku II. For The Legacy of Goku they can read the scripts and rewrite
+the lines of one dialogue scene; the
 [SDK overview](sdk-overview.md) describes them.
 
 ## Limits of this version

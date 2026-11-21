@@ -27,7 +27,7 @@ visual game content
 -> optional technical detail
 ```
 
-Two consequences and one exception:
+Two consequences and one past exception:
 
 - Show the actual game visuals whenever they are known. A sprite, tile, palette
   or map preview beats a numeric identifier.

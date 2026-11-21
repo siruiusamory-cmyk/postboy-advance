@@ -7,7 +7,9 @@ Notable changes to what a visitor or user of this project can see.
 ### Clearer guide and site wording
 - The website and the guides use plainer wording and no longer describe the program
   as a text-only editor.
-- The user guide has a **Common questions** section, linked from the README.
+- The user guide has a **Common questions** section, linked from the README. The
+  README now also says that one Legacy of Goku dialogue scene can be rewritten
+  with the developer tools.
 - The error window now opens even when the log folder cannot be created.
 - Error reports and copied details hide more spellings of your Windows user folder,
   including `file://` links and short 8.3 names.
