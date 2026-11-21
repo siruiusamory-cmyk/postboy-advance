@@ -59,6 +59,9 @@ You do not need Python, a terminal or any programming tools.
    type your own words under "Your text".
 6. Press **F6** to build, then **F5** to play your version in mGBA.
 
+**Help > Check for Updates** tells you whether a newer release is out. It contacts
+GitHub only when you choose it.
+
 Release v0.9.0.dev0 and earlier were published under the old name, DragonByte Z,
 so in those downloads the program is `DragonByte Z.exe`.
 

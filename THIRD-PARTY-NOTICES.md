@@ -338,7 +338,7 @@ notices are taken from the Python 3.12.10 source files:
 
 | Library | Where it is | Terms |
 | --- | --- | --- |
-| OpenSSL 3.0.16 | `_internal/libcrypto-3.dll`, used by `_hashlib.pyd` | Apache License 2.0, full text in `licenses/Python-LICENSE.txt` |
+| OpenSSL 3.0.16 | `_internal/libcrypto-3.dll` and `_internal/libssl-3.dll`, used by `_hashlib.pyd` and `_ssl.pyd` | Apache License 2.0, full text in `licenses/Python-LICENSE.txt` |
 | bzip2 1.0.8 | `_internal/_bz2.pyd` | the bzip2 licence, in `licenses/Python-LICENSE.txt` |
 | zlib | built into `_internal/python312.dll` | the zlib licence, below |
 | libmpdec | `_internal/_decimal.pyd` | the libmpdec licence, below |

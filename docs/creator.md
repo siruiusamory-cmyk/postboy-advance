@@ -309,6 +309,10 @@ issue with the details filled in, and with your Windows user folder shown as `~`
 error window, use **Help > Report a Problem**. **Help > Open Log Folder** opens the
 folder that holds `postboy-advance.log`.
 
+**Help > Check for Updates** asks GitHub for the newest release and tells you whether
+it is newer than yours. The program contacts GitHub only when you choose this, and
+it downloads nothing: **Open Download Page** opens the releases page in your browser.
+
 ## Common questions
 
 ### Why does Windows warn me when the program starts?

@@ -4,6 +4,17 @@ Notable changes to what a visitor or user of this project can see.
 
 ## Unreleased
 
+### Version 0.10.0 and update checks
+- The program is now version 0.10.0.dev0, the first version number under the name
+  Postboy Advance.
+- **Help > Check for Updates** tells you whether a newer release is out. It contacts
+  GitHub only when you choose it and downloads nothing.
+- The website's roadmap shows the creator-experience and release phases as in
+  progress.
+- For maintainers: `python -m tools.webfoot.release_identity --bump <version>` sets
+  the version, and pushing a `v<version>` tag builds the Windows download on GitHub
+  and opens a draft release.
+
 ### Clearer guide and site wording
 - The website and the guides use plainer wording and no longer describe the program
   as a text-only editor.
