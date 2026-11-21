@@ -166,7 +166,8 @@ The full rules are in the [ROM safety contract](docs/ROM_SAFETY.md).
   [Common questions](docs/creator.md#common-questions) in the user guide.
 - Found a bug or want a feature: open an
   [issue](https://github.com/siruiusamory-cmyk/postboy-advance/issues). Say what you
-  did, what you expected and what happened. Never attach a ROM, save file or
+  did, what you expected and what happened. An issue is public, so read it before
+  you submit it. Never attach a ROM, save file or
   anything taken out of the game.
 - In the program, **Help > Report a Problem** opens a new issue with the program's
   version filled in.

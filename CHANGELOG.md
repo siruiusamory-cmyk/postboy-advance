@@ -13,6 +13,7 @@ Notable changes to what a visitor or user of this project can see.
 - The error window now opens even when the log folder cannot be created.
 - Error reports and copied details hide more spellings of your Windows user folder,
   including `file://` links and short 8.3 names.
+  A folder beside it whose name starts the same way is shortened too.
 
 ### Menus, About and error reports
 - The program has File, Project and Help menus beside the toolbar.

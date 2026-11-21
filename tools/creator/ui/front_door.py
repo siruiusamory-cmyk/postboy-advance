@@ -63,7 +63,7 @@ def without_home(text: str) -> str:
         spellings += [base.replace("\\", "\\\\\\\\"), base.replace("\\", "\\\\"), base,
                       base.replace("\\", "/")]
     for spelling in spellings:
-        text = re.sub(re.escape(spelling) + r"(?![\w~-])", "~", text, flags=re.IGNORECASE)
+        text = re.sub(re.escape(spelling), "~", text, flags=re.IGNORECASE)
     return text
 
 

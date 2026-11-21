@@ -177,6 +177,15 @@ def test_error_hook_is_installed_without_a_log_folder(monkeypatch, tmp_path):
     assert sys.excepthook is hook
 
 
+def test_a_folder_that_starts_with_the_home_name_is_hidden_too():
+    from tools.creator.ui.front_door import without_home
+
+    home = str(Path.home())
+    for tail in ("_old", "2", "-backup"):
+        shown = without_home(home + tail + "\\x")
+        assert home.lower() not in shown.lower(), shown
+
+
 def test_export_patch_sends_the_chosen_file_to_the_job(window, tmp_path, monkeypatch):
     import json
 
