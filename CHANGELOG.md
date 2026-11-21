@@ -4,6 +4,17 @@ Notable changes to what a visitor or user of this project can see.
 
 ## Unreleased
 
+### Clearer guide and site wording
+- The website and the guides use plainer wording and no longer describe the program
+  as a text-only editor.
+- The user guide has a **Common questions** section, linked from the README. The
+  README now also says that one Legacy of Goku dialogue scene can be rewritten
+  with the developer tools.
+- The error window now opens even when the log folder cannot be created.
+- Error reports and copied details hide more spellings of your Windows user folder,
+  including `file://` links and short 8.3 names.
+  A folder beside it whose name starts the same way is shortened too.
+
 ### Menus, About and error reports
 - The program has File, Project and Help menus beside the toolbar.
 - **File > Export Patch...** saves a `.bps` patch of your project to share, with no
@@ -55,8 +66,7 @@ Notable changes to what a visitor or user of this project can see.
   journal and edit modules stay in `tools/dragonbyte` as the library the application
   is built on, so `python -m tools.dragonbyte` no longer starts anything; use
   `python -m tools.creator` or `DragonByte Z.cmd`.
-- The release guard now checks the entry module the packaged application really
-  starts from.
+- The release guard now checks the entry module the packaged application starts from.
 - `docs/history` is removed; the earlier README remains in the git history.
 
 ### Sheet export and template
@@ -64,7 +74,7 @@ Notable changes to what a visitor or user of this project can see.
   and `<name>.sprite.toml`, a portable description with an attribution line.
 - **Import sheet template...** makes the character again from those two files, every
   pixel the same, in one undoable step; unsupported colours are refused as with Import.
-- A deeply nested template is refused in words instead of crashing.
+- A deeply nested template is refused with a message instead of crashing.
 - A picture whose size differs from its template is refused before it is unpacked.
 - A linked picture or template, a picture name ending in a dot or space, `true` as a
   number and an attribution with control characters are refused.

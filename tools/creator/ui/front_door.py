@@ -8,7 +8,7 @@ import platform
 import re
 import sys
 import traceback
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urlsplit
 
 import PySide6
 from PySide6.QtCore import Qt, QUrl, qVersion
@@ -42,10 +42,27 @@ def beside_program(name: str) -> Path:
     return REPOSITORY_ROOT / name
 
 
+def short_path(path: str) -> str:
+    """The 8.3 spelling Windows reports for a path, or the path where there is none."""
+    try:
+        import ctypes
+
+        buffer = ctypes.create_unicode_buffer(32768)
+        if ctypes.windll.kernel32.GetShortPathNameW(path, buffer, len(buffer)):
+            return buffer.value
+    except (AttributeError, OSError):
+        pass
+    return path
+
+
 def without_home(text: str) -> str:
-    home = str(Path.home())
-    # An OSError prints its file name with doubled backslashes.
-    for spelling in (home.replace("\\", "\\\\"), home, home.replace("\\", "/")):
+    home = Path.home()
+    spellings = [urlsplit(home.as_uri()).path]
+    for base in dict.fromkeys((str(home), short_path(str(home)))):
+        # An OSError prints doubled backslashes, and a repr of that text doubles them again.
+        spellings += [base.replace("\\", "\\\\\\\\"), base.replace("\\", "\\\\"), base,
+                      base.replace("\\", "/")]
+    for spelling in spellings:
         text = re.sub(re.escape(spelling), "~", text, flags=re.IGNORECASE)
     return text
 
@@ -123,8 +140,9 @@ def show_error(window, kind, value, trace) -> None:
     box = QMessageBox(
         QMessageBox.Icon.Warning,
         "Something went wrong",
-        "Something went wrong in Postboy Advance. Your project on disk was not changed "
-        f"by this error.\n\n{summary}",
+        "Something went wrong in Postboy Advance. You can copy the details or report them "
+        "on GitHub. If the program closes before you save, your unsaved text changes are "
+        f"offered back the next time you open the project.\n\n{summary}",
         parent=window,
     )
     box.setTextFormat(Qt.TextFormat.PlainText)

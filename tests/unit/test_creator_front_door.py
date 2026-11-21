@@ -81,12 +81,21 @@ def test_export_patch_needs_a_project(window, tmp_path):
 def test_details_carry_the_version_and_no_home_path():
     from tools.creator.ui.front_door import details_text
 
-    details = details_text(identity_document())
+    identity = dict(identity_document())
+    identity["build"] = {**identity.get("build", {}),
+                         "commit": str(Path.home() / "checkout"),
+                         "built_at": str(Path.home() / "packaging" / "stamp.txt")}
+    details = details_text(identity)
     assert PRODUCT_VERSION in details
     assert "Python" in details and "Qt" in details
+    assert "~" in details
+    assert str(Path.home()).lower() not in details.lower(), details
 
 
-def test_home_is_hidden_however_an_error_spells_it():
+def test_home_is_hidden_however_an_error_spells_it(monkeypatch):
+    from urllib.request import pathname2url
+
+    from tools.creator.ui import front_door
     from tools.creator.ui.front_door import without_home
 
     inside = Path.home() / "Game" / "project.json"
@@ -99,6 +108,82 @@ def test_home_is_hidden_however_an_error_spells_it():
         shown = without_home(text)
         assert Path.home().name.lower() not in shown.lower(), shown
         assert "~" in shown
+
+    home = Path.home().parent / "Zq Home"
+    short = home.parent / "ZQHOME~1"
+    monkeypatch.setattr(Path, "home", lambda: home)
+    monkeypatch.setattr(front_door, "short_path",
+                        lambda path: str(short) if path == str(home) else path)
+    inside = home / "Game" / "project.json"
+    for text in (
+        inside.as_uri(),
+        "file:" + pathname2url(str(inside)),
+        repr(repr(str(inside))),
+        str(short / "Game" / "project.json"),
+        str(FileNotFoundError(2, "No such file", str(short / "Game"))),
+    ):
+        shown = without_home(text)
+        assert "zq" not in shown.lower() and "~" in shown, shown
+
+
+def test_each_error_dialog_button_does_only_its_own_job(window, monkeypatch):
+    from PySide6.QtCore import QUrl
+    from PySide6.QtGui import QGuiApplication
+
+    from tools.creator.ui import front_door
+
+    try:
+        raise FileNotFoundError(2, "No such file", str(Path.home() / "Game" / "project.json"))
+    except FileNotFoundError:
+        failure = sys.exc_info()
+    home = Path.home().name.lower()
+    clipboard = QGuiApplication.clipboard()
+    opened = []
+    monkeypatch.setattr(front_door, "open_url", opened.append)
+    for name in ("Copy details", "Report on GitHub", "Close"):
+        clipboard.setText("untouched")
+        opened.clear()
+        monkeypatch.setattr(
+            QtWidgets.QMessageBox, "exec",
+            lambda box, name=name: next(b for b in box.buttons() if b.text() == name).click(),
+        )
+        front_door.show_error(window, *failure)
+        copied = clipboard.text()
+        if name == "Copy details":
+            assert "~" in copied and home not in copied.lower(), copied
+            assert opened == []
+        elif name == "Report on GitHub":
+            assert copied == "untouched" and len(opened) == 1
+            url = opened[0].toString(QUrl.ComponentFormattingOption.FullyEncoded)
+            assert len(url) <= 6000
+            assert home not in unquote(url).lower()
+        else:
+            assert copied == "untouched" and opened == []
+
+
+def test_error_hook_is_installed_without_a_log_folder(monkeypatch, tmp_path):
+    from tools.creator import app as creator_app
+    from tools.creator.ui.front_door import ErrorHook
+
+    def refuse(*_arguments, **_options):
+        raise PermissionError("no logs folder")
+
+    monkeypatch.setattr(sys, "excepthook", sys.excepthook)
+    monkeypatch.setattr(Path, "mkdir", refuse)
+    logger = logging.getLogger("postboy-advance")
+    monkeypatch.setattr(logger, "handlers", list(logger.handlers))
+    hook = creator_app._start_logging(tmp_path / "settings")
+    assert isinstance(hook, ErrorHook)
+    assert sys.excepthook is hook
+
+
+def test_a_folder_that_starts_with_the_home_name_is_hidden_too():
+    from tools.creator.ui.front_door import without_home
+
+    home = str(Path.home())
+    for tail in ("_old", "2", "-backup"):
+        shown = without_home(home + tail + "\\x")
+        assert home.lower() not in shown.lower(), shown
 
 
 def test_export_patch_sends_the_chosen_file_to_the_job(window, tmp_path, monkeypatch):

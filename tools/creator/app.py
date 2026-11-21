@@ -61,7 +61,7 @@ def _start_logging(directory: Path):
             format="%(asctime)s %(levelname)s %(message)s",
         )
     except OSError:
-        return None
+        logging.getLogger("postboy-advance").addHandler(logging.NullHandler())
     from .ui.front_door import ErrorHook
 
     sys.excepthook = hook = ErrorHook()
@@ -104,8 +104,7 @@ def main(argv: list[str] | None = None) -> int:
     settings_directory = configuration_directory()
     hook = _start_logging(settings_directory)
     window = MainWindow(identity.display, settings_directory, identity=identity_document())
-    if hook is not None:
-        hook.window = window
+    hook.window = window
     window.show()
     return app.exec()
 

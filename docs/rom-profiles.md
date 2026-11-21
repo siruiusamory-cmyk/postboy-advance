@@ -78,8 +78,7 @@ The codec is chosen from the record size the profile declares, by
 implements raises `UnknownEnemyCodecError`; there is no default and no nearest
 match, because reading an unverified layout through the wrong codec produces
 plausible nonsense rather than an error. Nothing on this path asks which game it
-is looking at - that coupling was removed in TOOLKIT-005 and is not reintroduced
-to add a second game.
+is looking at, and a second game must not bring that check back.
 
 **The selector is the safety boundary, and the recognisability tests are not.**
 Measured against the canonical Legacy of Goku II image, Buu's
@@ -88,8 +87,8 @@ record's unsigned 32-bit values at `+0x00` and `+0x04` are small enough to leave
 `+0x03` and `+0x07` zero, which satisfies both of Buu's pad-byte gates by
 accident; `+0x0C` lands in 1..200, which satisfies its level gate; and it reads a
 `0x1C` window over `0x18`-stride data without ever checking stride, so it is
-loose here rather than strict. A review measured 312 further 4-aligned offsets
-near the table that also pass it. Pointing the Buu codec at this table would
+loose here rather than strict. Another 312 4-aligned offsets
+near the table also pass it. Pointing the Buu codec at this table would
 therefore decode at stride `0x1C` with a 3-byte HP and scatter writes across
 record boundaries. What prevents that is the declared record size, not a
 predicate.
@@ -103,9 +102,8 @@ limit - nothing in the ROM was found to enforce it - so a value above it is
 unrecognisable as a record while still being legal to write. The unsigned 32-bit
 width bound the encoder checks is separate from it.
 
-An earlier survey reported that no LOGII table matched this toolkit's stat record
-shapes. That was a statement about the codec's record size, which is `0x1C`
-against LOGII's `0x18`, and it was read as a statement about the ROM.
+No LOGII table matches the codec's `0x1C` record size, because LOGII's stat records are
+`0x18` bytes.
 
 ### Why Legacy of Goku II exposes HP and nothing else
 

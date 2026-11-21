@@ -27,7 +27,7 @@ visual game content
 -> optional technical detail
 ```
 
-Two consequences:
+Two consequences and one past exception:
 
 - Show the actual game visuals whenever they are known. A sprite, tile, palette
   or map preview beats a numeric identifier.
@@ -36,18 +36,16 @@ Two consequences:
   `inspector.py` is the worked example: content, then editing context, then
   authoring state, then the raw handle and offset rows behind a `Detail`
   disclosure (`inspector.py:7-23`).
-- **One surface inverts that rule, deliberately and by name.** The ROM
-  destination of the retired first shell had the image itself as its
-  subject, so it is address-first: the address gutter leads every row, a range
-  row leads with its address rather than a name, and `Go to address` is an
-  authoring input. This is the single inversion of the rule above, and it is
-  bounded on three sides. It applies only to that destination, because every
-  other surface is object-first and reaches the image through `Open bytes` with
-  a proven extent. It never becomes a way to edit a semantic object by address:
-  a write into bytes a declared structure owns is refused with the owner named.
-  And wherever it shows a byte it shows both spellings, the image address and
-  the file offset, saying which of the two it read from the input, so the reader
-  never has to guess which space a number is in.
+- **Past exception.** The retired first shell's ROM destination was
+  address-first: the address gutter led every row, a range row led with its
+  address rather than a name, and `Go to address` was an authoring input. This was
+  the single inversion of the rule above, and it was bounded on three sides. It
+  applied only to that destination, because every other surface was object-first
+  and reached the image through `Open bytes` with a proven extent. It never became
+  a way to edit a semantic object by address: a write into bytes a declared
+  structure owned was refused with the owner named. Wherever it showed a byte it
+  showed both spellings, the image address and the file offset, and said which of
+  the two it had read from the input.
 
 ## Design language and palette intent
 
@@ -97,9 +95,8 @@ margin:
 **State is never conveyed by colour alone.** Every status role also carries a
 glyph and a brightness difference: `theme.status_glyph` returns the glyph and
 `theme.STATE_COLORS` resolves the role to a colour, so a caller names a state
-rather than mixing a colour (`theme.py:335-379`). This is a hard requirement,
-not a preference, because red and green alone are indistinguishable to a
-red-green colourblind reader. Specify all five selection states distinctly:
+rather than mixing a colour (`theme.py:335-379`). This is required: red
+and green alone are indistinguishable to a red-green colourblind reader. Specify all five selection states distinctly:
 inactive, hover, selected, keyboard-focused, disabled.
 
 ## Required design pass before implementation
@@ -227,10 +224,9 @@ Prefer:
 
 ## The visual and interaction review
 
-**Hard rule: source inspection and passing tests are not evidence that the UI
-looks correct.** A screenshot path alone is not evidence either; the reviewer
-must open the image and look at it. Interaction is reviewed the same way: by
-running the application, not by reading the diff.
+**Review the UI by looking at it.** Source and passing tests do not show how it
+looks, and a screenshot path does not either. Open the image, and run the
+application to review interaction.
 
 ### Required workflow
 

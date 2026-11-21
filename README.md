@@ -108,7 +108,8 @@ experience, strength and endurance. Place them on maps and choose when they appe
 ### Safety nets
 
 - Every change can be undone with **Ctrl+Z**.
-- Unsaved work survives a crash and is offered back the next time you open the project.
+- Unsaved text changes survive a crash and are offered back the next time you open
+  the project.
 - A build that fails keeps your last working build.
 - Your original ROM is never changed.
 
@@ -126,7 +127,7 @@ anyone. To make a patch, choose **File > Export Patch...** in the program
 | --- | --- |
 | **Dragon Ball Z: Buu's Fury (USA)** | Everything described above. This is the game the program is built for. |
 | **Dragon Ball Z: The Legacy of Goku II** | Developer tools only: a few command-line edits. Not available in the program. |
-| **Dragon Ball Z: The Legacy of Goku** | Developer tools only: the game is recognised and its scripts can be read. Not available in the program. |
+| **Dragon Ball Z: The Legacy of Goku** | Developer tools only: the game is recognised, its scripts can be read and one dialogue scene's lines can be rewritten. Not available in the program. |
 
 Only the exact supported version of each game is accepted. A file with the right
 title but different contents is refused. [ROM profiles](docs/rom-profiles.md) lists
@@ -161,9 +162,12 @@ The full rules are in the [ROM safety contract](docs/ROM_SAFETY.md).
 
 - Something went wrong: see
   [If something goes wrong](docs/creator.md#if-something-goes-wrong) in the user guide.
+- Questions about your ROM or sharing what you made: see
+  [Common questions](docs/creator.md#common-questions) in the user guide.
 - Found a bug or want a feature: open an
   [issue](https://github.com/siruiusamory-cmyk/postboy-advance/issues). Say what you
-  did, what you expected and what happened. Never attach a ROM, save file or
+  did, what you expected and what happened. An issue is public, so read it before
+  you submit it. Never attach a ROM, save file or
   anything taken out of the game.
 - In the program, **Help > Report a Problem** opens a new issue with the program's
   version filled in.

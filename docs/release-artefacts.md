@@ -188,14 +188,14 @@ exported patch names the tool build that produced it while a built image does no
 
 * A legally obtained ROM, kept outside version control. The ignored `roms\`
   directory is the usual place, and the canonical image is never modified.
-* For the desktop editor, the assembled atlas at `build\atlas\atlas.jsonl`; it
-  refuses every ROM without one. `webfoot atlas regenerate` produces it from a
+* For the engineering Workbench, the assembled atlas at `build\atlas\atlas.jsonl`; it
+  refuses every ROM without one. Postboy Advance does not need it. `webfoot atlas regenerate` produces it from a
   local ROM.
 * An emulator (mGBA) for the Run action only. It is never required to build.
 
 A packaged application does not require a repository checkout, a Python
 installation, `uv` or a virtual environment. A source checkout does: see
-[`../README.md`](../README.md) for the developer setup.
+[`../INSTALL.md`](../INSTALL.md) for the developer setup.
 
 ## What must never be committed or distributed
 
