@@ -1494,7 +1494,7 @@ const roadmapTo1: RoadmapTo1 = {
         "Deterministic reopen and rebuild",
         "Documentation and tutorial polish",
       ],
-      state: "planned",
+      state: "in-progress",
     },
     {
       id: "release",
@@ -1515,7 +1515,7 @@ const roadmapTo1: RoadmapTo1 = {
         "Real-hardware and flashcart smoke test",
         "Final end-to-end authored project",
       ],
-      state: "planned",
+      state: "in-progress",
     },
   ],
   featureCompleteTitle: "100% is not the same milestone as 1.0",

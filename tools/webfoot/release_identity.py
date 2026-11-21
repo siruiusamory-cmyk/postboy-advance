@@ -45,11 +45,11 @@ import sys
 PRODUCT_NAME = "Postboy Advance"
 
 #: The pre-release product version. One literal; every surface reads it.
-PRODUCT_VERSION = "0.9.0.dev0"
+PRODUCT_VERSION = "0.10.0.dev0"
 
 #: The same version as the four integers a Windows version resource is required
 #: to carry, where a pre-release suffix has no place. A test asserts the two agree.
-VERSION_TUPLE = (0, 9, 0, 0)
+VERSION_TUPLE = (0, 10, 0, 0)
 
 #: Where a package build writes the generated record, and where a packaged build
 #: reads it. Untracked: it names one machine's commit, not the project's content.
@@ -246,6 +246,35 @@ def write_build_record(path: str | Path | None = None) -> Path:
     return destination
 
 
+_BUMPABLE = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.dev\d+)?")
+
+
+def bump(version: str, root: str | Path | None = None) -> list[Path]:
+    """Write a new product version into this module and the Windows version resource."""
+    match = _BUMPABLE.fullmatch(version)
+    if not match:
+        raise ValueError(f"{version!r} is not a version like 1.2.3 or 1.2.3.dev0")
+    root = Path(root) if root is not None else Path(__file__).resolve().parents[2]
+    numbers = [*match.groups(), "0"]
+    spaced, dotted = ", ".join(numbers), ".".join(numbers)
+    module = root / "tools" / "webfoot" / "release_identity.py"
+    resource = root / f"{PRODUCT_NAME}.version.txt"
+    edits = (
+        (module, r'^PRODUCT_VERSION = "[^"]*"', f'PRODUCT_VERSION = "{version}"', 1),
+        (module, r"^VERSION_TUPLE = \([^)]*\)", f"VERSION_TUPLE = ({spaced})", 1),
+        (resource, r"\b(filevers|prodvers)=\([^)]*\)", rf"\1=({spaced})", 2),
+        (resource, r'(StringStruct\("(?:File|Product)Version", ")[^"]*', rf"\g<1>{dotted}", 2),
+    )
+    texts = {path: path.read_bytes().decode("utf-8") for path in (module, resource)}
+    for path, pattern, replacement, expected in edits:
+        texts[path], count = re.subn(pattern, replacement, texts[path], flags=re.MULTILINE)
+        if count != expected:
+            raise ValueError(f"{path.name}: {pattern} matched {count} time(s), not {expected}")
+    for path, text in texts.items():
+        path.write_bytes(text.encode("utf-8"))
+    return list(texts)
+
+
 def identity_document() -> dict:
     """Both identities as one JSON-serialisable document, for CI and packaging."""
     return {
@@ -271,8 +300,20 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="write the generated build record a packaged build reads",
     )
+    parser.add_argument(
+        "--bump",
+        metavar="VERSION",
+        help="write a new product version, such as 1.2.3, into the source files",
+    )
     arguments = parser.parse_args(argv)
 
+    if arguments.bump:
+        try:
+            for path in bump(arguments.bump):
+                print(path)
+        except ValueError as error:
+            parser.error(str(error))
+        return 0
     if arguments.write_record:
         print(write_build_record())
         return 0

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from http.client import HTTPException
+import json
 import logging
 from pathlib import Path
 import platform
@@ -9,6 +11,7 @@ import re
 import sys
 import traceback
 from urllib.parse import quote, urlencode, urlsplit
+from urllib.request import Request, urlopen
 
 import PySide6
 from PySide6.QtCore import Qt, QUrl, qVersion
@@ -21,6 +24,8 @@ log = logging.getLogger("postboy-advance")
 REPOSITORY_URL = "https://github.com/siruiusamory-cmyk/postboy-advance"
 GUIDE_URL = REPOSITORY_URL + "/blob/master/docs/creator.md"
 NEW_ISSUE_URL = REPOSITORY_URL + "/issues/new"
+RELEASES_URL = REPOSITORY_URL + "/releases"
+LATEST_RELEASE_API = REPOSITORY_URL.replace("github.com", "api.github.com/repos") + "/releases/latest"
 URL_LIMIT = 6000
 TITLE_LIMIT = 120
 NEVER_ATTACH = "Never attach a ROM, save file or anything taken out of the game."
@@ -101,6 +106,50 @@ def issue_url(details: str, title: str = "", trace: str = "") -> str:
     if low < len(trace) and "\n" in tail:
         tail = tail.split("\n", 1)[1]
     return build(tail)
+
+
+def version_key(text: str) -> tuple:
+    """A dev build sorts before its release; text that is not a version sorts lowest."""
+    match = re.fullmatch(r"v?(\d+)\.(\d+)\.(\d+)(?:\.dev(\d+))?", text.strip())
+    if not match:
+        return ()
+    *numbers, dev = match.groups()
+    return (*map(int, numbers), dev is None, int(dev or 0))
+
+
+def latest_release() -> str:
+    """The tag of the newest published release, asked of GitHub."""
+    request = Request(LATEST_RELEASE_API, headers={
+        "Accept": "application/vnd.github+json", "User-Agent": "Postboy-Advance"})
+    with urlopen(request, timeout=10) as reply:
+        return str(json.load(reply)["tag_name"])[:40]
+
+
+def check_for_updates(window, identity: dict) -> None:
+    current = identity.get("product", {}).get("version", "")
+    QGuiApplication.setOverrideCursor(Qt.CursorShape.WaitCursor)
+    try:
+        # shortcut: blocks the window for up to ten seconds, move to a thread if that is felt
+        latest = latest_release()
+    except (OSError, HTTPException, ValueError, KeyError, TypeError) as error:
+        log.warning("update check failed: %s", without_home(str(error)))
+        latest = None
+    finally:
+        QGuiApplication.restoreOverrideCursor()
+    if latest is None:
+        text = ("Could not check for updates. Check your internet connection, or open "
+                "the download page to look yourself.")
+    elif version_key(latest) > version_key(current):
+        text = f"Postboy Advance {latest.removeprefix('v')} is available. You have {current}."
+    else:
+        text = f"You have the newest version, {current}. The newest release is {latest}."
+    box = QMessageBox(QMessageBox.Icon.Information, "Check for Updates", text, parent=window)
+    box.setTextFormat(Qt.TextFormat.PlainText)
+    download = box.addButton("Open Download Page", QMessageBox.ButtonRole.ActionRole)
+    box.addButton("Close", QMessageBox.ButtonRole.RejectRole)
+    box.exec()
+    if box.clickedButton() is download:
+        open_url(QUrl(RELEASES_URL))
 
 
 def _licence() -> str:

@@ -287,3 +287,25 @@ def test_the_manifest_records_the_identity_the_service_reports(monkeypatch):
         tool_dirty=randomizer_service.repository_is_dirty(),
     )
     assert document["build"] == {"commit": SENTINEL_COMMIT, "dirty": True}
+
+
+def test_bump_writes_the_version_into_both_files_and_refuses_anything_else(tmp_path):
+    module = tmp_path / "tools" / "webfoot" / "release_identity.py"
+    resource = tmp_path / f"{PRODUCT_NAME}.version.txt"
+    module.parent.mkdir(parents=True)
+    module.write_bytes(Path(release_identity.__file__).read_bytes())
+    resource.write_bytes((REPOSITORY_ROOT / resource.name).read_bytes())
+
+    assert release_identity.bump("1.2.3.dev4", tmp_path) == [module, resource]
+    written = module.read_text(encoding="utf-8")
+    assert 'PRODUCT_VERSION = "1.2.3.dev4"\n' in written
+    assert "VERSION_TUPLE = (1, 2, 3, 0)\n" in written
+    stamped = resource.read_text(encoding="utf-8")
+    assert stamped.count("(1, 2, 3, 0)") == 2 and stamped.count('"1.2.3.0"') == 2
+    assert b"\r" not in resource.read_bytes()
+
+    before = module.read_bytes()
+    for refused in ("1.2", "v1.2.3", "1.2.3rc1", "1.2.3.4", "01.2.3"):
+        with pytest.raises(ValueError):
+            release_identity.bump(refused, tmp_path)
+    assert module.read_bytes() == before

@@ -47,7 +47,7 @@ MENUS = (
     ("File", ("New Project", "Open Project", "Save", None, "Export Patch", None, "Exit")),
     ("Project", ("Undo", "Redo", None, "Validate", "Build", "Play", None, "Choose Emulator")),
     ("Help", ("User Guide", "Report a Problem", "Open Log Folder", None,
-              "Third-Party Notices", "About Postboy Advance")),
+              "Check for Updates", "Third-Party Notices", "About Postboy Advance")),
 )
 
 
@@ -146,6 +146,7 @@ class MainWindow(QMainWindow):
                 QUrl(front_door.issue_url(front_door.details_text(self.identity))))),
             ("Open Log Folder", lambda: front_door.open_url(
                 QUrl.fromLocalFile(str(self._settings_directory / "logs")))),
+            ("Check for Updates", lambda: front_door.check_for_updates(self, self.identity)),
             ("Third-Party Notices", lambda: front_door.open_url(
                 QUrl.fromLocalFile(str(front_door.beside_program("THIRD-PARTY-NOTICES.md"))))),
             ("About Postboy Advance", lambda: front_door.show_about(self, self.identity)),

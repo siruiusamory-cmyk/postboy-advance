@@ -289,7 +289,7 @@ one fetch, and the portable gate must not.
 Two GitHub workflows replace the one that ran fourteen hosted jobs on every push
 and every pull request.
 
-- `.github/workflows/ci.yml` is the **PR gate**, the only automatic workflow. It
+- `.github/workflows/ci.yml` is the **PR gate**, the only workflow a branch or a pull request starts. It
   runs on `pull_request` and on a push to `master` only, so a branch update starts
   one run instead of the duplicate push/PR pair. Measured 2026-10-29 with
   read-only `gh`: 46 recorded runs, 18 of which were that pair, and the pair
@@ -304,6 +304,10 @@ and every pull request.
   shards, the quality gates, the ROM-free integration member, both adjacency
   orders and the merged report, unchanged, with `workflow_dispatch` as its only
   trigger so it costs nothing unless a human asks for it.
+
+A third workflow, `.github/workflows/release.yml`, runs no tests. It starts on a
+`v*` tag or by hand and builds the Windows download;
+[`release-artefacts.md`](release-artefacts.md) describes it.
 
 The PR gate classifies the change first, with `tools.dev.ci_tier`, which is the
 one place the path rules live; `tests/unit/test_ci_tier.py` covers every tier, an

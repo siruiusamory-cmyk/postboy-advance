@@ -20,7 +20,7 @@ MENUS = {
     "File": ["New Project", "Open Project", "Save", None, "Export Patch...", None, "Exit"],
     "Project": ["Undo", "Redo", None, "Validate", "Build", "Play", None, "Choose Emulator"],
     "Help": ["User Guide", "Report a Problem", "Open Log Folder", None,
-             "Third-Party Notices", "About Postboy Advance"],
+             "Check for Updates", "Third-Party Notices", "About Postboy Advance"],
 }
 
 
@@ -284,6 +284,67 @@ def test_help_actions_open_through_the_one_seam(window, monkeypatch, tmp_path):
     monkeypatch.setattr(QtWidgets.QMessageBox, "exec", lambda box: shown.append(box.text()))
     window.actions_by_name["About Postboy Advance"].trigger()
     assert PRODUCT_VERSION in shown[0] and "Mozilla Public License" in shown[0]
+
+
+def test_versions_order_by_number_and_a_dev_build_is_older_than_its_release():
+    from tools.creator.ui.front_door import version_key
+
+    ordered = ["nonsense", "0.9.0.dev0", "v0.9.0", "0.10.0.dev0", "0.10.0.dev2", "v0.10.0", "1.0.0"]
+    assert sorted(ordered, key=version_key) == ordered
+    assert version_key("v0.10.0") == version_key("0.10.0")
+
+
+def test_latest_release_reads_the_tag_from_the_one_address(monkeypatch):
+    import io
+
+    from tools.creator.ui import front_door
+
+    asked = []
+
+    def reply(request, timeout):
+        asked.append((request.full_url, timeout))
+        return io.BytesIO(b'{"tag_name": "v0.10.0"}')
+
+    monkeypatch.setattr(front_door, "urlopen", reply)
+    assert front_door.latest_release() == "v0.10.0"
+    assert asked == [
+        ("https://api.github.com/repos/siruiusamory-cmyk/postboy-advance/releases/latest", 10)
+    ]
+
+
+@pytest.mark.parametrize(
+    ("latest", "expected"),
+    [
+        ("v99.0.0", "Postboy Advance 99.0.0 is available. You have " + PRODUCT_VERSION),
+        ("v0.0.1", "You have the newest version, " + PRODUCT_VERSION),
+        ("not a version", "You have the newest version, " + PRODUCT_VERSION),
+        (OSError("no route"), "Could not check for updates"),
+        (__import__("http.client").client.IncompleteRead(b""), "Could not check for updates"),
+        (KeyError("tag_name"), "Could not check for updates"),
+    ],
+)
+def test_check_for_updates_says_what_it_found_and_opens_only_the_download_page(
+    window, monkeypatch, latest, expected
+):
+    from tools.creator.ui import front_door
+
+    def answer():
+        if isinstance(latest, Exception):
+            raise latest
+        return latest
+
+    shown, opened = [], []
+    monkeypatch.setattr(front_door, "latest_release", answer)
+    monkeypatch.setattr(front_door, "open_url", opened.append)
+    monkeypatch.setattr(QtWidgets.QMessageBox, "exec", lambda box: shown.append(box.text()))
+    monkeypatch.setattr(
+        QtWidgets.QMessageBox, "clickedButton",
+        lambda box: next(b for b in box.buttons() if b.text() == "Open Download Page"),
+    )
+    window.actions_by_name["Check for Updates"].trigger()
+    assert expected in shown[0]
+    assert [url.toString() for url in opened] == [front_door.RELEASES_URL]
+    assert QtWidgets.QApplication.overrideCursor() is None
 
 
 @pytest.mark.parametrize(

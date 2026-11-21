@@ -99,6 +99,9 @@ python -m tools.webfoot.release_identity --json     # the same, as a document fo
   fails if the string appears a second time in the shipped package.
 * `VERSION_TUPLE` is the same version in the four-number form a Windows version
   resource requires.
+* `python -m tools.webfoot.release_identity --bump 0.10.0` writes a new version into
+  that module and into `Postboy Advance.version.txt`. It accepts `X.Y.Z` and
+  `X.Y.Z.devN` and nothing else.
 * The version is deliberately a pre-release identity. v1.0 is a decision, and
   "version and build identity are visible" is one of the gates listed in
   [`ROADMAP_TO_1_0.md`](ROADMAP_TO_1_0.md).
@@ -137,6 +140,20 @@ byte probe and the census below over every staged file, and writes
 `Postboy-Advance-<version>-windows-x64.zip` with a `.sha256` file beside it. The
 version comes from `tools/webfoot/release_identity.py`, and the zip holds the one
 `Postboy Advance` folder.
+
+### Cutting a release
+
+1. Run `--bump` with the release version, and merge that change.
+2. On the merged commit, run the three scripts above on a machine that has the ROM.
+   The packaged smoke and the byte probe run only there.
+3. Tag that commit `v<version>` and push the tag.
+
+The tag starts `.github/workflows/release.yml`. It stops if the tag does not name
+the product version at that commit. Otherwise it freezes and packages the program on
+a hosted runner with `-SkipRomProbe`, because a hosted runner has no ROM, and opens a
+**draft** release holding the zip and its `.sha256`. A person publishes the draft.
+Running the workflow by hand builds the same zip as a run artefact and opens no
+release.
 
 What exists and is checked:
 
