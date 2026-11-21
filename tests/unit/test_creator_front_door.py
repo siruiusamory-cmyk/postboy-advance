@@ -319,6 +319,7 @@ def test_latest_release_reads_the_tag_from_the_one_address(monkeypatch):
         ("v0.0.1", "You have the newest version, " + PRODUCT_VERSION),
         ("not a version", "You have the newest version, " + PRODUCT_VERSION),
         (OSError("no route"), "Could not check for updates"),
+        (__import__("http.client").client.IncompleteRead(b""), "Could not check for updates"),
         (KeyError("tag_name"), "Could not check for updates"),
     ],
 )

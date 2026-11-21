@@ -8,7 +8,8 @@ Notable changes to what a visitor or user of this project can see.
 - The program is now version 0.10.0.dev0, the first version number under the name
   Postboy Advance.
 - **Help > Check for Updates** tells you whether a newer release is out. It contacts
-  GitHub only when you choose it and downloads nothing.
+  GitHub only when you choose it and downloads nothing. A broken reply is reported
+  as a failed check.
 - The website's roadmap shows the creator-experience and release phases as in
   progress.
 - For maintainers: `python -m tools.webfoot.release_identity --bump <version>` sets

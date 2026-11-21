@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from http.client import HTTPException
 import json
 import logging
 from pathlib import Path
@@ -108,7 +109,7 @@ def issue_url(details: str, title: str = "", trace: str = "") -> str:
 
 
 def version_key(text: str) -> tuple:
-    """Orders 0.9.0.dev0 < 0.9.0 < 0.10.0; text that is not a version sorts lowest."""
+    """A dev build sorts before its release; text that is not a version sorts lowest."""
     match = re.fullmatch(r"v?(\d+)\.(\d+)\.(\d+)(?:\.dev(\d+))?", text.strip())
     if not match:
         return ()
@@ -130,7 +131,7 @@ def check_for_updates(window, identity: dict) -> None:
     try:
         # shortcut: blocks the window for up to ten seconds, move to a thread if that is felt
         latest = latest_release()
-    except (OSError, ValueError, KeyError, TypeError) as error:
+    except (OSError, HTTPException, ValueError, KeyError, TypeError) as error:
         log.warning("update check failed: %s", without_home(str(error)))
         latest = None
     finally:

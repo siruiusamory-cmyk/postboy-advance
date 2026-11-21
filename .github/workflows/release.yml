@@ -80,7 +80,7 @@ jobs:
             build/packaged/*.zip.sha256
 
       - name: Open a draft release that holds the zip and its checksum
-        if: github.ref_type == 'tag'
+        if: github.event_name == 'push' && github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

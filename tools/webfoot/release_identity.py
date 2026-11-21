@@ -246,14 +246,14 @@ def write_build_record(path: str | Path | None = None) -> Path:
     return destination
 
 
-_BUMPABLE = re.compile(r"(\d+)\.(\d+)\.(\d+)(?:\.dev\d+)?")
+_BUMPABLE = re.compile(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:\.dev\d+)?")
 
 
 def bump(version: str, root: str | Path | None = None) -> list[Path]:
     """Write a new product version into this module and the Windows version resource."""
     match = _BUMPABLE.fullmatch(version)
     if not match:
-        raise ValueError(f"{version!r} is not a version like 0.10.0 or 0.10.0.dev0")
+        raise ValueError(f"{version!r} is not a version like 1.2.3 or 1.2.3.dev0")
     root = Path(root) if root is not None else Path(__file__).resolve().parents[2]
     numbers = [*match.groups(), "0"]
     spaced, dotted = ", ".join(numbers), ".".join(numbers)
@@ -303,7 +303,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--bump",
         metavar="VERSION",
-        help="write a new product version, such as 0.10.0, into the source files",
+        help="write a new product version, such as 1.2.3, into the source files",
     )
     arguments = parser.parse_args(argv)
 

@@ -305,7 +305,7 @@ def test_bump_writes_the_version_into_both_files_and_refuses_anything_else(tmp_p
     assert b"\r" not in resource.read_bytes()
 
     before = module.read_bytes()
-    for refused in ("1.2", "v1.2.3", "1.2.3rc1", "1.2.3.4"):
+    for refused in ("1.2", "v1.2.3", "1.2.3rc1", "1.2.3.4", "01.2.3"):
         with pytest.raises(ValueError):
             release_identity.bump(refused, tmp_path)
     assert module.read_bytes() == before
